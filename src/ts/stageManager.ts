@@ -19,7 +19,7 @@ class StageManager {
     }
 
     readyMap() {
-        for(let i=1; i<=1; i++) {
+        for(let i=1; i<=40; i++) {
             const rand = (Math.floor(Math.random()*10))%2;
             const enermy = new Enermy(i, rand, (i%10)*80, Math.ceil(i/10)*70);
             this._enermyList.push(enermy);

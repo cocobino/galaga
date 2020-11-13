@@ -1,23 +1,26 @@
 import StageManager from './stageManager';
 import ScoreManager from './scoreManager';
 import Observer from './module/observer';
+import Player from './player';
 
 class Missile {
     private _missileDOM:HTMLElement;
     private _timer:any;
-    private _enermyMissile:any;
     private _drop:any;
     private _bomb:any;
+    private _checkPlayer:any;
     private _enermyList:Array<any> = [];
 
     private stageManager:StageManager;
     private scoreManager:ScoreManager;
+    private player:Player;
     private observer:Observer;
     
     constructor(type:string, positionX?:number, positionY?:number) {
         this.stageManager = StageManager.getInstance();
         this.scoreManager = ScoreManager.getInstance();
         this.observer = Observer.getInstance();
+        this.player = Player.getInstance();
         
         type === 'player' ? this._setMissile() : this._dropMissile(positionX, positionY);
         this._enermyList = this.stageManager.getMap;
@@ -27,6 +30,22 @@ class Missile {
         this._missileDOM = document.createElement('div');
         this._missileDOM.setAttribute('style', `width:2px;height:5px;background:white;position:absolute;left:${positionX+125}px;top:${positionY+25}px;transition:top .5s linear`);
         this._drop = setInterval(() => {this._dropEnermyMissile(); }, 300);
+        this._checkPlayer = setInterval(() => {this._bombPlayer();}, 300);
+    }
+
+    private _bombPlayer() {
+        let playerLeft = this.player.getPlayerX;
+        let playerTop = 980;
+        let missileLeft = parseInt(this._missileDOM['style']['left']);
+        let missileTop = parseInt(this._missileDOM['style']['top']);
+
+        if((playerLeft <= missileLeft && missileLeft <= playerLeft+50) && 
+        (playerTop <= missileTop && missileTop<= playerTop+50)) {
+            //TODO playerLife
+
+            //TODO gameResetz
+            this.player.getPlayerDOM.remove();
+        }
     }
 
     private _dropEnermyMissile() {
@@ -69,7 +88,7 @@ class Missile {
                     this._enermyList.splice(idx, 1);
                     this.scoreManager.setCurScore(this.scoreManager.getCurScore+ele.getScore);
                     this.observer.notifyObserver('redrawScore');
-                    clearInterval(this._enermyMissile);
+                    this.observer.notifyObserver(`lifeYn${ele.getSn}`);
                     clearInterval(this._bomb);
                     clearInterval(this._timer);
                     return true;

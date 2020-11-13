@@ -12,7 +12,6 @@ class Enermy {
     private observer:Observer;
 
     private createMissile:any;
-    private life:boolean = true;
 
     constructor(sn:number, type:number, positionX:number, positionY:number) {
         this.sn = sn;
@@ -25,8 +24,12 @@ class Enermy {
         this.missile = new Missile('enermy', positionX, positionY);
         this._setEnermy();
 
-        this.createMissile = setInterval(() => { this.missile = new Missile('enermy', positionX, positionY); this._setEnermy(); }, 1000);
-        this.observer.registerObserver('lifeYn', false);
+        this.createMissile = setInterval(() => { this.missile = new Missile('enermy', positionX, positionY); this._setEnermy(); }, 5000);
+        this.observer.registerObserver(`lifeYn${sn}`, this._clearMissile.bind(this));
+    }
+
+    private _clearMissile() {
+        clearInterval(this.createMissile);
     }
 
     private _setEnermy() {
@@ -38,9 +41,6 @@ class Enermy {
         document.querySelector('#enermyArea').appendChild(this.missile.getMissile);
     }
 
-    _setLife(life:boolean) {
-        this.life = life;
-    }
 
     get getEneryDOM():HTMLElement {
         return this.enermyDOM;
