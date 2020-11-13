@@ -1,0 +1,77 @@
+body {
+    padding: 0; margin: 0;
+}
+
+div.game {
+    width: 1000px;
+    height: 1000px;
+    background: url('../img/bg.gif');
+
+    // content
+    div.content {
+        position: relative;
+
+        div.curScore {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            color: white;
+            font-size: 15px;
+            width: 1000px;
+            top: 5px;
+            transition: left 0.1s linear;
+        }
+
+        div.enermyArea {
+            position: relative;
+            width: 1000px;
+            height: 900px;
+            
+            div.enermy {
+                position:absolute;
+                width: 50px;
+                height: 50px;
+            }
+
+            div.type0 {
+                background: url('../img/enermy/typeA.png') no-repeat;
+            }
+
+            div.type1 {
+                background: url('../img/enermy/typeB.png') no-repeat;
+            }
+        }
+
+        div.playerArea {
+            position: fixed;
+            bottom: 0;
+            width: 1000px;
+            height: 100px;
+
+            div.player {
+                position: relative;
+                width: 39px;
+                height: 42px;
+                left: 458px;
+                background: url('../img/player.png') no-repeat;
+                transition: left 0.1s linear;
+            }
+        }
+
+        div.textArea {
+            display: flex;
+            position: fixed;
+            top: 0;
+            width: 1000px;
+            height: 900px;
+            text-align: center;
+            align-items: center;
+            color: white;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: 450;
+            opacity: 0;
+            transition:  opacity .5s linear;
+        }
+    }
+}
