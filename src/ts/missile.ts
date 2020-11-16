@@ -41,10 +41,14 @@ class Missile {
 
         if((playerLeft <= missileLeft && missileLeft <= playerLeft+50) && 
         (playerTop <= missileTop && missileTop<= playerTop+50)) {
-            //TODO playerLife
-
+            //playerLife manage
+            this.player.setPlayerPositionX(10000);
+            this.player.setPlayerLifeCount(this.player.getPlayerLifeCount-1);
+            this.observer.notifyObserver('redrawLife');
+            
             //TODO gameResetz
             this.player.getPlayerDOM.remove();
+            this.player.getPlayerLifeCount ? setTimeout(() => { this.observer.notifyObserver('redrawPlayer'); }, 3000) : '';
         }
     }
 

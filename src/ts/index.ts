@@ -16,7 +16,11 @@ class SceneManager {
 
     private parentDOM:HTMLElement;
     private enermyDOM:HTMLElement;
-    private scoreDOM:HTMLElement
+    // 2개를 같이관리하면 더 좋을거같다.
+    private scoreDOM:HTMLElement;
+    private lifeDOM:HTMLElement;
+    private playerAreaDOM:HTMLElement;
+
     private possibleFire:boolean = true;
     private timeOffset:number = 2000;
     private count:number = 0;
@@ -30,20 +34,25 @@ class SceneManager {
 
         this.parentDOM = document.querySelector('#content');
         this.enermyDOM = document.querySelector('#enermyArea');
+        this.playerAreaDOM = document.querySelector('#playerArea');
 
         this.observer.registerObserver('redrawScore', this.redrawScore.bind(this));
+        this.observer.registerObserver('redrawLife', this.redrawLife.bind(this));
+        this.observer.registerObserver('redrawPlayer', this.redrawPlayer.bind(this));
 
         this.event();
         this.drawText();
         this.drawScore();
-        this.drawStage();
+        this.lifeCount();
     }
     
     event() {
         document.addEventListener('keydown', e => {
             if(e.key === 'Enter' && !this.textManager.getIntroUse && this.count > 3) {
+                this.playerManager.setPlayerPositionX(480);
                 this.textManager.setIntroUse(true);
                 this.drawPlayer();
+                this.drawStage();
             }
             if(e.keyCode === 32 && this.textManager.getIntroUse && this.possibleFire) {
                 this.fire();
@@ -89,8 +98,12 @@ class SceneManager {
     
     drawPlayer() {
         this.parentDOM.removeChild(this.textManager.getTextDOM);
-        document.querySelector('#playerArea').appendChild(this.playerManager.getPlayerDOM);
-        
+        this.playerAreaDOM.appendChild(this.playerManager.getPlayerDOM);
+    }
+
+    redrawPlayer() {
+        this.playerManager.setPlayerPositionX(480);
+        this.playerAreaDOM.appendChild(this.playerManager.getPlayerDOM);
     }
 
     drawStage() {
@@ -102,6 +115,20 @@ class SceneManager {
             this.enermyDOM.appendChild(enermy.getEneryDOM);
         });
         
+    }
+
+    lifeCount() {
+        this.lifeDOM = document.createElement('div');
+        this.lifeDOM.setAttribute('class', 'lifeScore');
+        this.lifeDOM.innerHTML = `lifeCount: ${this.playerManager.getPlayerLifeCount}`;
+
+        setTimeout(() => {
+            this.parentDOM.appendChild(this.lifeDOM);
+        }, this.count*this.timeOffset);
+    }
+
+    redrawLife() {
+        this.lifeDOM.innerHTML = `lifeCount: ${this.playerManager.getPlayerLifeCount}`;
     }
 
     fire() {

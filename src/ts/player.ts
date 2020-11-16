@@ -3,6 +3,7 @@ class Player {
     public static _player:Player;
     private _playerDOM:HTMLElement; //playerDOM
     private _playerX:number = 480;
+    private _lifeCount:number = 3; //default
 
     private constructor() {
         this._setPlayerDOM();
@@ -33,13 +34,25 @@ class Player {
         });
     }
 
+    public setPlayerLifeCount(lifeCount:number) {
+        this._lifeCount = lifeCount;
+    }
+
+    public get getPlayerLifeCount():number {
+        return this._lifeCount;
+    }
+
     private setPlayerX(left : boolean):void {
         let offset:number = 25;
         this._playerX = left ? (this._playerX-offset > 0 ? this._playerX-=offset : 0) : (this._playerX+offset < 1000 ? this._playerX +=offset : 1000);
         this._playerDOM.setAttribute('style', `left:${this._playerX}px`);
     }
 
-    public get getPlayerX() {
+    public setPlayerPositionX(playerPositionX:number) {
+        this._playerX = playerPositionX;
+    }
+    
+    public get getPlayerX():number {
         return this._playerX;
     }
 
